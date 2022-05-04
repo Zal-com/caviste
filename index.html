@@ -4,16 +4,23 @@
     <meta charset="UTF-8">
     <title>Mon Cellier</title>
     <link href="bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
+   <!-- <link rel="stylesheet" href="style.css">-->
 </head>
 <body>
-    <h1 style="color: var(--bs-blue)">Mon Cellier</h1>
-    <h2>Lien des images : <i>http://cruth.phpnet.org/epfc/caviste/public/pics/NOM_IMAGE</i></h2>
-
+<div id="main-container">
     <header>
-        <!-- Partie supérieur -->
-        <div>
-
+        <div id="header-container">
+        <!-- Partie supérieur LOGO/TITRE/HOME/ABOUT-->
+            <div id="header-left">
+                <img src="#" alt="logo">
+                <h2>Mon Cellier</h2>
+            </div>
+            <div id="header-right">
+                <a href="#">Home</a>
+                <a href="#">About</a>
+            </div>
         </div>
+
         <!-- Partie inférieure -->
         <nav>
             <form id="formSearch" action="index.html" method="get">
@@ -34,21 +41,47 @@
         <!-- Liste des noms de vins -->
         <nav>
             <ul>
-                <li></li>
+                <li>Liste des vins</li>
             </ul>
         </nav>
         <!-- Affichage data des vins -->
         <div>
-
+            <img src="#" alt="vin">
+            <div id="infos-vins">
+                Liste des infos des vins
+            </div>
+            <div id="tabs">
+                <ul>
+                    <li><a href="#tabs-1">Nunc tincidunt</a></li>
+                    <li><a href="#tabs-2">Proin dolor</a></li>
+                    <li><a href="#tabs-3">Aenean lacinia</a></li>
+                </ul>
+                <div id="tabs-1">
+                    <p>Text</p>
+                </div>
+                <div id="tabs-2">
+                    <p>Text</p>
+                </div>
+                <div id="tabs-3">
+                    <p>Text</p>
+                    <p>Text</p>
+                </div>
+            </div>
 
         </div>
 
     </main>
 
-    <footer>&copy; EPFC 2020</footer>
+    <footer>&copy; EPFC 2022 MON FOOTER PAS LE TIEN 2 (le retour)</footer>
+</div>
+<script src="jquery/jquery-3.6.0.min.js"></script>
+<script src="jquery-ui/jquery-ui.min.js"></script>
+<script src="script.js"></script>
+<script>
+    $( function() {
+        $( "#onglets" ).tabs();
+    } );
+</script>
 
-    <script src="jquery/jquery-3.6.0.min.js"></script>
-    <script src="jquery-ui/jquery-ui.min.js"></script>
-    <script src="script.js"></script>
 </body>
 </html>
