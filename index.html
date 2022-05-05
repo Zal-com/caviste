@@ -2,18 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Mon Cellier</title>
-    <link href="bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="jqueryui/jquery-ui.css">
     <link rel="stylesheet" href="jqueryui/jquery-ui.structure.css">
     <link rel="stylesheet" href="jqueryui/jquery-ui.theme.css">
     <link rel="stylesheet" href="style.css"/>
+    <title>Mon Cellier</title>
 </head>
 <body>
-<div id="main-container">
+<div class="container-fluid" id="main-container">
     <header>
         <div id="header-container">
-        <!-- Partie supérieur LOGO/TITRE/HOME/ABOUT-->
+            <!-- Partie supérieur LOGO/TITRE/HOME/ABOUT-->
             <div id="header-left">
                 <img src="#" alt="logo">
                 <h2>Mon Cellier</h2>
@@ -38,52 +38,76 @@
             </form>
         </nav>
     </header>
-
-    <main>
-
-        <!-- Liste des noms de vins -->
-        <nav>
-            <ul>
-                <li>Liste des vins</li>
-            </ul>
-        </nav>
-        <!-- Affichage data des vins -->
-        <div>
-            <img src="#" alt="vin">
-            <div id="infos-vins">
-                Liste des infos des vins
+    <div class="row">
+        <div class="col-md-4" id="vin-listing">
+            <ol>
+                <li class="list-item">
+                    Lorem ipsum dolor sit amet
+                </li>
+                <li class="list-item">
+                    Consectetur adipiscing elit
+                </li>
+                <li class="list-item">
+                    Integer molestie lorem at massa
+                </li>
+                <li class="list-item">
+                    Facilisis in pretium nisl aliquet
+                </li>
+                <li class="list-item">
+                    Nulla volutpat aliquam velit
+                </li>
+                <li class="list-item">
+                    Faucibus porta lacus fringilla vel
+                </li>
+                <li class="list-item">
+                    Aenean sit amet erat nunc
+                </li>
+                <li class="list-item">
+                    Eget porttitor lorem
+                </li>
+            </ol>
+        </div>
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-md-6" id="vin-img">
+                    <h3>
+                        Images des vins
+                    </h3>
+                </div>
+                <div class="col-md-6" id="vin-data">
+                    <h3>
+                        Data des vins
+                    </h3>
+                </div>
             </div>
-            <div id="tabs">
-                <ul>
-                    <li><a href="#tabs-1">Nunc tincidunt</a></li>
-                    <li><a href="#tabs-2">Proin dolor</a></li>
-                    <li><a href="#tabs-3">Aenean lacinia</a></li>
-                </ul>
-                <div id="tabs-1">
-                    <p>Text</p>
+            <div class="row">
+                <div class="col-md-12" id="tabs">
+                    <ul>
+                        <li><a href="#tabs-1">Nunc tincidunt</a></li>
+                        <li><a href="#tabs-2">Proin dolor</a></li>
+                        <li><a href="#tabs-3">Aenean lacinia</a></li>
+                    </ul>
+                    <div id="tabs-1">
+                        <p>Text</p>
+                    </div>
+                    <div id="tabs-2">
+                        <p>Text</p>
+                    </div>
+                    <div id="tabs-3">
+                        <p>Text</p>
+                        <p>Text</p>
+                    </div>
                 </div>
-                <div id="tabs-2">
-                    <p>Text</p>
-                </div>
-                <div id="tabs-3">
-                    <p>Text</p>
-                    <p>Text</p>
-                </div>
-            </div>
             </div>
         </div>
-    </main>
-
-    <footer>&copy; EPFC 2022 MON FOOTER PAS LE TIEN 2 (le retour)</footer>
+    </div>
 </div>
-<script src="jquery/jquery-3.6.0.min.js"></script>
+</body>
+<script src="jqueryui/external/jquery/jquery.js"></script>
 <script src="jqueryui/jquery-ui.js"></script>
-<script src="script.js"></script>
 <script>
     $( function() {
         $( "#tabs" ).tabs();
     } );
 </script>
-
-</body>
 </html>
