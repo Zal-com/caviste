@@ -30,41 +30,24 @@ header a{
     display: inline;
     float: right;
 }
-main{
-    display: flex;
-    width: 100%;
-}
-main nav{
-    height: 300px;
-    border: 1px solid fuchsia;
-    width: 30%;
-    margin-right: 3%;
-}
-
-main div{
-    display: flex;
-    height: 300px;
-    border: 1px solid fuchsia;
-    width: 100%;
-}
-
-main img{
-
-}
-
-#infos-vins{
-
-}
-
-#tabs{
-
-}
-
-/*=======================================================*/
 
 #vin-listing, #vin-data, #vin-img
 {
     border: 1px solid fuchsia;
     height: 100%;
+}
+
+#logo{
+    max-height: 50px;
+}
+
+#vin{
+    max-height: 200px;
+}
+
+footer{
+    width: 100%;
+    text-align: center;
+    margin-top: 20px;
 }
 
