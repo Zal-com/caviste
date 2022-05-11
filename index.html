@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang=fr" xmlns="">
 <head>
     <meta charset="UTF-8">
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="jqueryui/jquery-ui.structure.css">
     <link rel="stylesheet" href="jqueryui/jquery-ui.theme.css">
     <link rel="stylesheet" href="style.css"/>
+    <script src="jqueryui/external/jquery/jquery.js"></script>
+    <script src="jqueryui/jquery-ui.js"></script>
     <title>Mon Cellier</title>
 </head>
 <body>
@@ -40,38 +42,10 @@
     </header>
     <div class="row">
         <div class="col-md-4" id="vin-listing">
-            <ol>
-                <li class="list-item">
-                    Lorem ipsum dolor sit amet
-                </li>
-                <li class="list-item">
-                    Consectetur adipiscing elit
-                </li>
-                <li class="list-item">
-                    Integer molestie lorem at massa
-                </li>
-                <li class="list-item">
-                    Facilisis in pretium nisl aliquet
-                </li>
-                <li class="list-item">
-                    Nulla volutpat aliquam velit
-                </li>
-                <li class="list-item">
-                    Faucibus porta lacus fringilla vel
-                </li>
-                <li class="list-item">
-                    Aenean sit amet erat nunc
-                </li>
-                <li class="list-item">
-                    Eget porttitor lorem
-                </li>
-                <li class="list-item">
-                    Cum pes cantare, omnes ususes manifestum ferox, camerarius pulchritudinees.
-                </li>
-                <li class="list-item">
-                    Damn yer fish, feed the pants.
-                </li>
-            </ol>
+            <ul id="wines-list">
+
+            </ul>
+
         </div>
         <div class="col-md-8">
             <div class="row">
@@ -107,10 +81,13 @@
         &copy; EPFC 2022 MON FOOTER PAS LE TIEN
     </footer>
 </div>
-
 </body>
-<script src="jqueryui/external/jquery/jquery.js"></script>
-<script src="jqueryui/jquery-ui.js"></script>
+<script src="script.js">
+   /* $(document).ready(function(){
+        getAllWines();
+    });*/
+
+</script>
 <script>
     $( function() {
         $( "#tabs" ).tabs();
