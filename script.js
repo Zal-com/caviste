@@ -1,9 +1,9 @@
 const winesList = document.getElementById('wines-list');
+const formSearch = document.getElementById('formSearch');
 /* Recherche vins */
-let formSearch = $('#formSearch');
-formSearch.on('submit', (event) => {
-    searchWines(this, event);
-});
+formSearch.addEventListener('submit', (event) => {
+    searchWines(formSearch, event);
+})
 
 /* Tous les vins */
 function getAllWines() {
