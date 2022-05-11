@@ -1,9 +1,14 @@
 body{
     padding: 20px;
     margin: auto;
-    width: 95%;
+    width: 80%;
     background-color: lightgrey;
     border-radius: 10px;
+    height: 80%;
+}
+
+nav{
+    display: flex;
 }
 
 #main-container{
@@ -33,7 +38,6 @@ header a{
 
 #vin-listing, #vin-data, #vin-img
 {
-    border: 1px solid fuchsia;
     height: 100%;
 }
 
@@ -48,6 +52,75 @@ header a{
 footer{
     width: 100%;
     text-align: center;
-    margin-top: 20px;
+    margin-top: 15px;
 }
+
+#wines-list{
+    overflow: auto;
+    height: max-content;
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid lightgray;
+    border-radius: 6px;
+}
+
+#wines-list li{
+    border-bottom: 1px solid lightgray;
+    text-align: left;
+    border-radius: unset;
+}
+
+#wines-list:last-child{
+    border-bottom: none;
+}
+
+.active{
+    color: whitesmoke;
+    font-weight: bold;
+    background-color: #7f007f;
+    border-right: 1px solid #7f007f;
+}
+
+.center-fix {
+    text-align: center;
+    color: black;
+    position: relative;
+    margin: auto;
+}
+#vin-img{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 334px;
+}
+
+#vin-img img{
+    min-height: 300px;
+    margin: auto;
+}
+
+#wine-id{
+    background-color: grey;
+    color: whitesmoke;
+    border-radius: 6px;
+    padding: 0 5px;
+    margin-right: 7px;
+}
+
+#vin-data p{
+    margin-bottom: 5px;
+}
+
+#tabs{
+    margin-top: 10px;
+}
+
+#flag{
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
+}
+
 
