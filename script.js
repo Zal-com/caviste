@@ -359,6 +359,45 @@ function searchWines(form, event)
     event.preventDefault();
 }
 
+function getWineData(id) {
+
+    let wine = JSON.parse(sessionStorage[id]);
+    let flagCode = '';
+    for (const flag of flagsList) {
+        if(flag.name===wine.country){
+            flagCode = flag.code;
+        }
+    }
+
+    //Afficher image
+    $('#vin-img img').attr("src", "https://cruth.phpnet.org/epfc/caviste/public/pics/" + wine.picture);
+
+    //Afficher Data
+    $('#vin-data').html(`<h2><span id="wine-id">#${wine.id}</span>${wine.name.toUpperCase()}</h2>
+                                    <p><b>Grapes :</b> ${wine.grapes}</p>
+                                    <p><b>Country :</b> ${wine.country} <img src="https://countryflagsapi.com/png/${flagCode}" alt="${wine.country}" id="flag"></p>
+                                    <p><b>Region :</b> ${wine.region}</p>
+                                    <p><b>Year :</b> ${wine.year}</p>
+                                    <p><b>Capacity :</b> ${wine.capacity} cl</p>
+                                    <p><b>Color :</b> ${wine.color}</p>
+                                    <p><b>Price :</b> ${wine.price} €</p>`);
+
+    //Tabs
+    $('#tabs-1').text(wine.description);
+}
+
+function getWineComments(id)
+{
+    fetch(apiURL + 'wines/' + id + '/comments')
+        .then(response => response.json())
+        .then(json => {
+            for (const comment of json) {
+                console.log('comments :');
+                console.log(comment)
+            }
+        })
+}
+
 function emptyList()
 {
     let li = document.createElement('li');
