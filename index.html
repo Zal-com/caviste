@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+<!-- SLIDESHOW https://www.w3schools.com/howto/howto_js_slideshow.asp -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,10 +11,45 @@
     <link rel="stylesheet" href="style.css"/>
     <script src="jqueryui/external/jquery/jquery.js"></script>
     <script src="jqueryui/jquery-ui.js"></script>
+    <script src="https://kit.fontawesome.com/f92d7e8a24.js" crossorigin="anonymous"></script>
     <title>Mon Cellier</title>
 </head>
 <body>
 <div class="container-fluid" id="main-container">
+    <!-- Loader -->
+    <div id="loader"></div>
+    <!-- End Loader -->
+
+    <!-- Div for adding a note -->
+    <div id="noteContainer" class="popup">
+        <div class="popupForm" >
+            <div id="noteCross" class="cross">&cross;</div>
+            <h2 style="text-align: center">Note pour <br><span style="color: fuchsia" id="wine-name-note"></span></h2>
+            <form>
+                <label>
+                    <span style="margin-left: 55px" id="textareaCounter">144</span> caractères restants
+                    <textarea name="textarea" id="textarea" maxlength="144" cols="80" rows="6" placeholder="Ajouter une note ..."></textarea>
+                </label>
+                <button class="btn btn-danger">Ajouter la note</button>
+            </form>
+        </div>
+    </div>
+    <!-- End Note div -->
+
+    <!-- Login div -->
+    <div id="loginContainer" class="popup">
+        <div class="popupForm" >
+            <div id="loginCross" class="cross">&cross;</div>
+            <h2 style="text-align: center">Connexion</h2>
+            <form>
+                <input type="text" name="username" placeholder="Username">
+                <input type="password" name="pwd" placeholder="Password">
+                <button class="btn btn-danger">Log in</button>
+            </form>
+        </div>
+    </div>
+    <!-- End login div -->
+
     <header>
         <div id="header-container">
             <!-- Partie supérieur LOGO/TITRE/HOME/ABOUT-->
@@ -22,8 +58,7 @@
                 <h2>Mon Cellier</h2>
             </div>
             <div id="header-right">
-                <a href="#">Home</a>
-                <a href="#">About</a>
+                <a href="#" id="login">Connexion</a>
             </div>
         </div>
 
@@ -41,10 +76,7 @@
     </header>
     <div class="row">
         <div class="col-md-4" id="vin-listing">
-            <ul id="wines-list">
-
-            </ul>
-
+            <ul id="wines-list"></ul>
         </div>
         <div class="col-md-8">
             <div class="row">
@@ -52,7 +84,6 @@
                     <img id="vin" src="#" alt="vin">
                 </div>
                 <div class="col-md-6" id="vin-data">
-                    <h3>DATA DU VIN</h3>
                 </div>
             </div>
             <div class="row">
@@ -63,14 +94,10 @@
                         <li><a href="#tabs-3">Notes personnelles</a></li>
                     </ul>
                     <div id="tabs-1">
-                        <p>Simple visions loves most conclusions.</p>
                     </div>
                     <div id="tabs-2">
-                        <p>When the kraken whines for norman island, all reefs drink swashbuckling, fine plunders.</p>
                     </div>
                     <div id="tabs-3">
-                        <p>Ionic cannon at the homeworld was the energy of honor, dissolved to a fantastic star.</p>
-                        <p>Boil springy quinoas in a bucket with plain vinegar for about an hour to soothe their flavor.</p>
                     </div>
                 </div>
             </div>
@@ -81,12 +108,7 @@
     </footer>
 </div>
 </body>
-<script src="script.js">
-   /* $(document).ready(function(){
-        getAllWines();
-    });*/
-
-</script>
+<script src="script.js"></script>
 <script>
     $( function() {
         $( "#tabs" ).tabs();

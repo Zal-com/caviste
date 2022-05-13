@@ -248,32 +248,41 @@ const flagsList = [
 const winesList = document.getElementById('wines-list');
 const formSearch = document.getElementById('formSearch');
 let winesListElements = [];
-let doesAllWinesNeedToBeShown = true;
+
+// open - container - close : connexion
+let loginButton = $('#login');
+let loginContainer = $('#loginContainer');
+
 
 /*************************************************** MAIN *************************************************/
 window.addEventListener('load', () => {
     // get all wines
-    getWines();
+    getWines(true);
 
     /* Interval reload sessionStorage */
-    setInterval(getWines, 20000);
+    setInterval(getWines(false), 20000);
 
     /* Recherche vins */
     formSearch.addEventListener('submit', (event) => {
         searchWines(formSearch, event);
     })
 
-    // tout le blbablalbla
 
-    /* All wines */
-    if (doesAllWinesNeedToBeShown){
-        displayAllWines();
-    }
+    // close pop ups
+    window.addEventListener('keyup', (event) => {
+        if (event.key === "Escape") {
+            document.querySelectorAll('.popup').forEach(popup => {
+                popup.style.display = 'none';
+            })
+        }
+    })
+
+
 });
 
-/*********************************************** FUNCTIONS *********************************************/
+/*********************************************** WINE FUNCTIONS *********************************************/
 
-async function getWines()
+function getWines(hasToDisplay)
 {
     fetch(apiURL + 'wines')
         .then(response => response.json())
@@ -281,26 +290,8 @@ async function getWines()
             for (const wine of json) {
                 sessionStorage.setItem(wine.id, JSON.stringify(wine))
             }
+            if (hasToDisplay) displayAllWines();
         });
-}
-
-/* Wines list click */
-function winesListClickListener()
-{
-    winesListElements.forEach(element => {
-        element.addEventListener('click', () => {
-            // remove active class to all li's
-            removeActiveClass(winesListElements);
-            // add active class to li
-            element.classList.add('active');
-            // fetch wine data based on id
-            let buttonId = element.id;
-            let wineId = buttonId.match(/[\d]+/gm)[0];
-            // wine data
-            getWineData(wineId);
-            getWineComments(wineId);
-        });
-    });
 }
 
 /* Tous les vins */
@@ -317,12 +308,51 @@ function displayAllWines() {
     // get all li's of list of wine
     winesListElements = document.querySelectorAll('#wines-list li');
 
+
     // click listner of li's
     winesListClickListener();
+
+    //Set focus on first element of list
+    setElementFocus('#wines-list li:first-child');
+    $('#loader').hide();
+}
+
+/* Wines list click */
+function winesListClickListener()
+{
+    winesListElements.forEach(element => {
+        element.addEventListener('click', () => {
+            // remove active class to all li's
+            removeActiveClass(winesListElements);
+            // add active class to li
+            element.classList.add('active');
+            // fetch wine data based on id
+            let buttonId = element.id;
+            let wineId = buttonId.match(/\d+/gm)[0];
+            // tabs
+            setElementFocus('#ui-id-1');
+            // wine data
+            getWineData(wineId);
+            getWineComments(wineId);
+        });
+    });
+}
+//ui-tabs-tab ui-corner-top ui-state-default ui-tab ui-tabs-active ui-state-active -> tab actif
+//ui-tabs-tab ui-corner-top ui-state-default ui-tab --> tab inactif
+
+function createWinesListElements(name, id)
+{
+    let li = document.createElement('li');
+    li.innerText = name;
+    li.id = 'wine-' + id;
+    li.className = 'btn'; // bootstrap classes
+    winesList.appendChild(li);
 }
 
 function searchWines(form, event)
 {
+    event.preventDefault();
+
     let keyword = form.search.value;
     let wines = [];
 
@@ -344,19 +374,14 @@ function searchWines(form, event)
     } else {
         winesList.style.height = '457px';
         winesList.style.borderBottom = '1px solid lightgray';
-        emptyList();
+        showEmptyListMsg();
     }
-
-    // cancel all wines list
-    doesAllWinesNeedToBeShown = false;
 
     // get all li's of list of wines
     winesListElements = document.querySelectorAll('#wines-list li');
 
     // get data
-    winesListclickListener();
-
-    event.preventDefault();
+    winesListClickListener();
 }
 
 function getWineData(id) {
@@ -375,15 +400,32 @@ function getWineData(id) {
     //Afficher Data
     $('#vin-data').html(`<h2><span id="wine-id">#${wine.id}</span>${wine.name.toUpperCase()}</h2>
                                     <p><b>Grapes :</b> ${wine.grapes}</p>
-                                    <p><b>Country :</b> ${wine.country} <img src="https://countryflagsapi.com/png/${flagCode}" alt="${wine.country}" id="flag"></p>
+                                    <p><b>Country :</b> ${wine.country} <img src="${flagsAPI + flagCode}" alt="${wine.country}" id="flag"></p>
                                     <p><b>Region :</b> ${wine.region}</p>
                                     <p><b>Year :</b> ${wine.year}</p>
                                     <p><b>Capacity :</b> ${wine.capacity} cl</p>
                                     <p><b>Color :</b> ${wine.color}</p>
-                                    <p><b>Price :</b> ${wine.price} €</p>`);
+                                    <p><b>Price :</b> ${wine.price} €</p>
+                                    <button class="btn btn-light btn-sm"><i class="fa-solid fa-camera"></i> Add a picture</button>
+                                    <button class="btn btn-light btn-sm" id="addNote"><i class="fa-solid fa-pen"></i> Add a note</button>
+                                    <button class="btn btn-light btn-sm">
+                                        <i class="fa-solid fa-heart"></i> Like this wine 
+                                        <span id="likes" class="btn btn-danger btn-sm"></span>
+                                    </button>`);
+
+    // display likes in button
+    displayLikes(id);
 
     //Tabs
     $('#tabs-1').text(wine.description);
+
+    //Getting Comments
+    getWineComments(id);
+
+    //Pop-ups opening
+    popupDisplayer(document.getElementById('addNote'), document.getElementById('noteContainer'), document.getElementById('noteCross'));
+    popupDisplayer(document.getElementById('login'), document.getElementById('loginContainer'), document.getElementById('loginCross'))
+
 }
 
 function getWineComments(id)
@@ -391,14 +433,27 @@ function getWineComments(id)
     fetch(apiURL + 'wines/' + id + '/comments')
         .then(response => response.json())
         .then(json => {
+            let commentsHTML = '';
             for (const comment of json) {
-                console.log('comments :');
-                console.log(comment)
+                commentsHTML += `<p>${comment.content}</p><hr>`
             }
+            if(commentsHTML === ''){
+                commentsHTML = '<p class="no-comment">Pas de commentaires</p>'
+            }
+            $('#tabs-2').html(commentsHTML);
         })
 }
 
-function emptyList()
+function displayLikes(id)
+{
+    fetch(apiURL + 'wines/' + id + '/likes-count')
+        .then(response => response.json())
+        .then(json => {
+            $('#likes').html('<i class="fa fa-heart-o"> ' + json.total)
+        })
+}
+
+function showEmptyListMsg()
 {
     let li = document.createElement('li');
     let h3 = document.createElement('h3');
@@ -408,14 +463,45 @@ function emptyList()
     winesList.appendChild(li);
 }
 
-function createWinesListElements(name, id)
+function popupDisplayer(open, container, close)
 {
-    let li = document.createElement('li');
-    li.innerText = name;
-    li.id = 'wine-' + id;
-    li.className = 'btn'; // bootstrap classes
-    winesList.appendChild(li);
+    open.addEventListener('click', () => {
+        container.style.display = 'block';
+        setNoteFormData();
+        characterCount();
 
+        close.addEventListener('click', () => {
+            container.style.display = 'none';
+        })
+    });
+}
+
+
+function setNoteFormData()
+{
+    $('#wine-name-note').html($('#wine-name').text() + ', n°<span id="note-wine-id">' + $('#wine-id').text().substring(1) + '</span>');
+}
+
+function characterCount()
+{
+    let textarea = document.getElementById('textarea');
+
+    textarea.addEventListener('input', () => {
+        let maxChar = textarea.maxLength;
+        let textareaId = textarea.id;
+        let writtenChar = textarea.value.length;
+        let counter = document.getElementById(textareaId + 'Counter');
+        counter.innerText = (maxChar - writtenChar).toString();
+    });
+
+}
+
+/********************************************** CASUAL FUNCTIONS ******************************************************/
+
+function setElementFocus(element)
+{
+    // sets focus to Description tab
+    $(element).click();
 }
 
 function removeActiveClass(list)
@@ -423,4 +509,8 @@ function removeActiveClass(list)
     list.forEach(element => {
         if(element.classList.contains('active')) element.classList.remove('active');
     })
+}
+
+function login(username, password){
+
 }

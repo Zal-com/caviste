@@ -16,10 +16,16 @@ nav{
     border-radius: 10px;
     padding: 20px;
     box-shadow: 3px 3px 3px 2px grey;
+    width: 100%;
+    position: relative;
 }
 #main-container header{
     display:flex;
     flex-direction: column;
+}
+
+header{
+    margin-bottom: 20px;
 }
 
 header a{
@@ -64,6 +70,15 @@ footer{
     flex-direction: column;
     border: 1px solid lightgray;
     border-radius: 6px;
+}
+
+#wines-list li.active:hover{
+    color: white !important;
+    background: #7f007f !important;
+}
+
+#wines-list li:hover{
+    background: #f6f7f8;
 }
 
 #wines-list li{
@@ -115,6 +130,13 @@ footer{
 
 #tabs{
     margin-top: 10px;
+    height: 150px;
+    overflow: hidden;
+}
+
+#tabs div{
+    height: 100%;
+    overflow: auto;
 }
 
 #flag{
@@ -122,5 +144,112 @@ footer{
     width: 15px;
     height: 15px;
 }
+
+.no-comment{
+    color: grey;
+    font-weight: bolder;
+    font-size: xx-large;
+    display: flex;
+    justify-content: center;
+}
+
+.btn-secondary{
+    background: #f6f7f8 !important;
+    color: black;
+    border: none;
+}
+
+.btn-sm:hover{
+    color: black !important;
+    background: rgba(255, 0, 255, 0.5) !important;
+}
+
+.btn-sm:focus{
+    border: none !important;
+    color: #da3544 !important;
+    animation: none !important;
+}
+
+#likes {
+    padding: 1px 3px !important;
+    height: 25px;
+}
+
+#likes:hover {
+    background: #C82333 !important;
+    color: whitesmoke !important;
+}
+
+
+#loader, #noteContainer, #loginContainer{
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 100;
+    border-radius: 6px;
+}
+#loader{
+    background: url("images/loader.gif") no-repeat center center;
+    background-color: white;
+
+}
+.popup{
+    display: none;
+    background-color: rgba(68, 68, 68, 0.5);
+}
+
+.popupForm{
+    padding: 10px;
+    z-index: 100;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 50%;
+    width: 50%;
+    border-radius: 12px;
+    box-shadow: -2px -2px 2px white, 2px 2px 2px white;
+    background-color: white;
+}
+
+#textarea, #noteForm button{
+    margin: auto;
+    display: flex;
+    width: 80%;
+    justify-content: center;
+
+}
+
+#textarea{
+    resize: none;
+    padding: 15px;
+}
+
+.cross{
+    color: fuchsia;
+    float: right;
+}
+.cross:hover{
+    cursor: pointer;
+    
+}
+
+/******** SCROLLBAR *********/
+/*
+*::-webkit-scrollbar {
+    width: 6px;
+    height: 50%;
+}
+
+*::-webkit-scrollbar-track {
+    background: #ff00ff;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: #ff00ff;
+    border-radius: 8px;
+}*/
 
 
