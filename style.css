@@ -236,6 +236,10 @@ footer{
     
 }
 
+#login{
+    text-transform: capitalize;
+}
+
 /******** SCROLLBAR *********/
 /*
 *::-webkit-scrollbar {

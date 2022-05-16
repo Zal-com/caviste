@@ -247,6 +247,7 @@ const flagsList = [
 ];
 const winesList = document.getElementById('wines-list');
 const formSearch = document.getElementById('formSearch');
+const formLogin = document.getElementById('formSearch');
 let winesListElements = [];
 
 // open - container - close : connexion
@@ -267,6 +268,9 @@ window.addEventListener('load', () => {
         searchWines(formSearch, event);
     })
 
+    formLogin.addEventListener('submit', (e) =>{
+        login(formLogin, e)
+    } );
 
     // close pop ups
     window.addEventListener('keyup', (event) => {
@@ -277,7 +281,10 @@ window.addEventListener('load', () => {
         }
     })
 
-
+    if(!getCookie('username')){
+        $('#login').text('Connexion')
+    } else {
+        $('#login').text(getCookie('username'));}
 });
 
 /*********************************************** WINE FUNCTIONS *********************************************/
@@ -398,7 +405,7 @@ function getWineData(id) {
     $('#vin-img img').attr("src", "https://cruth.phpnet.org/epfc/caviste/public/pics/" + wine.picture);
 
     //Afficher Data
-    $('#vin-data').html(`<h2><span id="wine-id">#${wine.id}</span>${wine.name.toUpperCase()}</h2>
+    $('#vin-data').html(`<h2><span id="wine-id">#${wine.id}</span><span id="wine-name"> ${wine.name.toUpperCase()}</span></h2>
                                     <p><b>Grapes :</b> ${wine.grapes}</p>
                                     <p><b>Country :</b> ${wine.country} <img src="${flagsAPI + flagCode}" alt="${wine.country}" id="flag"></p>
                                     <p><b>Region :</b> ${wine.region}</p>
@@ -408,7 +415,7 @@ function getWineData(id) {
                                     <p><b>Price :</b> ${wine.price} €</p>
                                     <button class="btn btn-light btn-sm"><i class="fa-solid fa-camera"></i> Add a picture</button>
                                     <button class="btn btn-light btn-sm" id="addNote"><i class="fa-solid fa-pen"></i> Add a note</button>
-                                    <button class="btn btn-light btn-sm">
+                                    <button id="likeBtn" class="btn btn-light btn-sm">
                                         <i class="fa-solid fa-heart"></i> Like this wine 
                                         <span id="likes" class="btn btn-danger btn-sm"></span>
                                     </button>`);
@@ -426,6 +433,10 @@ function getWineData(id) {
     popupDisplayer(document.getElementById('addNote'), document.getElementById('noteContainer'), document.getElementById('noteCross'));
     popupDisplayer(document.getElementById('login'), document.getElementById('loginContainer'), document.getElementById('loginCross'))
 
+    //Add like on a wine
+    document.getElementById('likeBtn').addEventListener('click', e => {
+        addLike(id, getCookie('username'));
+    })
 }
 
 function getWineComments(id)
@@ -496,6 +507,28 @@ function characterCount()
 
 }
 
+function addLike(wineId, username){
+    const options = {
+        'method': 'PUT',
+        'body': JSON.stringify({ "like" : true }),	//Try with true or false
+        'mode': 'cors',
+        'headers': {
+            'content-type': 'application/json; charset=utf-8',
+            'Authorization': 'Basic '+btoa(getCookie(username + ':123'))	//FIXME
+        }
+    };
+
+    const fetchURL = 'wines/'+wineId+'/like';
+
+    fetch(apiURL + fetchURL, options).then(function(response) {
+        if(response.ok) {
+            response.json().then(function(data){
+                console.log(data);
+            });
+        }
+    });
+}
+
 /********************************************** CASUAL FUNCTIONS ******************************************************/
 
 function setElementFocus(element)
@@ -511,6 +544,51 @@ function removeActiveClass(list)
     })
 }
 
-function login(username, password){
+function login(form, event){
 
+    event.preventDefault();
+    //TODO
+    const credentials= form.username.value + ':' + form.pwd.value;
+    console.log(credentials)
+    const apiURL = 'https://cruth.phpnet.org/epfc/caviste/public/index.php/api';
+    const options = {
+        'method': 'GET',
+        //'body': JSON.stringify({ "like" : true }),	//Try with true or false
+        'mode': 'cors',
+        'headers': {
+            'content-type': 'application/json; charset=utf-8',
+            'Authorization': 'Basic '+btoa(credentials)	//Try with other credentials (login:password)
+        }
+    };
+
+    const fetchURL = '/users/authenticate';
+
+    fetch(apiURL + fetchURL, options)
+        .then(function(response) {
+            if (response.ok) {
+                response.json().then(function (data) {
+                    document.cookie = "username=" + username;
+                    document.cookie = "userid=" + data.id;
+                    document.cookie = "usermail=" + data.email;
+                })
+            }
+            //FIXME Besoin d'un mesage d'erreur
+            else alert("NO");
+        });
+}
+
+function getCookie(cookieName) {
+    if(cookieName!='') {
+        let allCookies = decodeURIComponent(document.cookie);
+        let tab = allCookies.split(cookieName+'=');
+        if(tab.length>1) {
+            let limite = tab[1].indexOf(';');
+            if(limite!=-1) {
+                return tab[1].substring(0,limite);
+            } else {
+                return tab[1].substring(0);
+            }
+        }
+    }
+    return false;
 }

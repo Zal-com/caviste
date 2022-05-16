@@ -4,13 +4,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Import bootstrap framework -->
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+
+    <!-- Import jQuery / jQueryUI libraries -->
     <link rel="stylesheet" href="jqueryui/jquery-ui.css">
     <link rel="stylesheet" href="jqueryui/jquery-ui.structure.css">
     <link rel="stylesheet" href="jqueryui/jquery-ui.theme.css">
+
+    <!-- Import Slick library
+    <link rel="stylesheet" type="text/css" href="slick/slick.css"/>
+    -->
+    <!--
+    // Add the new slick-theme.css if you want the default styling
+    <link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
+    -->
+   <!-- Link to own stylesheet -->
     <link rel="stylesheet" href="style.css"/>
+
+    <!-- Call to jQuery / jQueryUI scripts -->
     <script src="jqueryui/external/jquery/jquery.js"></script>
     <script src="jqueryui/jquery-ui.js"></script>
+
+    <!-- Call to Parsley  !! JQUERY DEPENDANT !! -->
+    <script src="parsley.min.js"></script>
+    <!-- Coll to FontAwesome library -->
     <script src="https://kit.fontawesome.com/f92d7e8a24.js" crossorigin="anonymous"></script>
     <title>Mon Cellier</title>
 </head>
@@ -41,10 +59,10 @@
         <div class="popupForm" >
             <div id="loginCross" class="cross">&cross;</div>
             <h2 style="text-align: center">Connexion</h2>
-            <form>
+            <form id="formLogin">
                 <input type="text" name="username" placeholder="Username">
                 <input type="password" name="pwd" placeholder="Password">
-                <button class="btn btn-danger">Log in</button>
+                <button id="login_submit" class="btn btn-danger">Log in</button>
             </form>
         </div>
     </div>
@@ -70,8 +88,8 @@
                 </label>
                 <button>Rechercher</button>
             </form>
-                <!-- filtrage des pays : faudra que les pays qui ont des vins : js -->
-                <button>Filtrer</button>
+            <!-- filtrage des pays : faudra que les pays qui ont des vins : js -->
+            <button>Filtrer</button>
         </nav>
     </header>
     <div class="row">
