@@ -43,7 +43,7 @@
         <div class="popupForm" >
             <div id="noteCross" class="cross">&cross;</div>
             <h2 style="text-align: center">Note pour <br><span style="color: fuchsia" id="wine-name-note"></span></h2>
-            <form>
+            <form id="noteForm">
                 <label>
                     <span style="margin-left: 55px" id="textareaCounter">144</span> caractères restants
                     <textarea name="textarea" id="textarea" maxlength="144" cols="80" rows="6" placeholder="Ajouter une note ..."></textarea>
@@ -59,7 +59,7 @@
         <div class="popupForm" >
             <div id="loginCross" class="cross">&cross;</div>
             <h2 style="text-align: center">Connexion</h2>
-            <form id="formLogin">
+            <form id="formLogin" method="get" action="index.html">
                 <input type="text" name="username" placeholder="Username">
                 <input type="password" name="pwd" placeholder="Password">
                 <button id="login_submit" class="btn btn-danger">Log in</button>

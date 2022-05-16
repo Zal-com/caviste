@@ -247,7 +247,8 @@ const flagsList = [
 ];
 const winesList = document.getElementById('wines-list');
 const formSearch = document.getElementById('formSearch');
-const formLogin = document.getElementById('formSearch');
+const formLogin = document.getElementById('formLogin');
+const noteForm = document.getElementById('noteForm');
 let winesListElements = [];
 
 // open - container - close : connexion
@@ -267,7 +268,7 @@ window.addEventListener('load', () => {
     formSearch.addEventListener('submit', (event) => {
         searchWines(formSearch, event);
     })
-
+    /* Login */
     formLogin.addEventListener('submit', (e) =>{
         login(formLogin, e)
     } );
@@ -508,6 +509,7 @@ function characterCount()
 }
 
 function addLike(wineId, username){
+
     const options = {
         'method': 'PUT',
         'body': JSON.stringify({ "like" : true }),	//Try with true or false
@@ -529,6 +531,13 @@ function addLike(wineId, username){
     });
 }
 
+function addNote(form, event){
+
+    event.preventDefault();
+
+
+}
+
 /********************************************** CASUAL FUNCTIONS ******************************************************/
 
 function setElementFocus(element)
@@ -547,10 +556,8 @@ function removeActiveClass(list)
 function login(form, event){
 
     event.preventDefault();
-    //TODO
+
     const credentials= form.username.value + ':' + form.pwd.value;
-    console.log(credentials)
-    const apiURL = 'https://cruth.phpnet.org/epfc/caviste/public/index.php/api';
     const options = {
         'method': 'GET',
         //'body': JSON.stringify({ "like" : true }),	//Try with true or false
@@ -561,13 +568,14 @@ function login(form, event){
         }
     };
 
-    const fetchURL = '/users/authenticate';
+    const fetchURL = 'users/authenticate';
 
     fetch(apiURL + fetchURL, options)
         .then(function(response) {
             if (response.ok) {
                 response.json().then(function (data) {
-                    document.cookie = "username=" + username;
+                    console.log(response)
+                    document.cookie = "username=" + form.username.value;
                     document.cookie = "userid=" + data.id;
                     document.cookie = "usermail=" + data.email;
                 })
@@ -575,6 +583,9 @@ function login(form, event){
             //FIXME Besoin d'un mesage d'erreur
             else alert("NO");
         });
+
+    $('.popup').css("display", "none");
+    $('#login').text(form.username.value);
 }
 
 function getCookie(cookieName) {
