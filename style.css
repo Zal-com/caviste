@@ -181,7 +181,7 @@ footer{
 }
 
 
-#loader, #noteContainer, #loginContainer{
+#loader, #noteContainer, #loginContainer, #uploadContainer{
     position: absolute;
     top: 0;
     left: 0;
@@ -240,6 +240,10 @@ footer{
     text-transform: capitalize;
 }
 
+.error{
+    color: red;
+}
+
 /******** SCROLLBAR *********/
 /*
 *::-webkit-scrollbar {
@@ -255,5 +259,4 @@ footer{
     background-color: #ff00ff;
     border-radius: 8px;
 }*/
-
 

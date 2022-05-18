@@ -250,11 +250,8 @@ const formSearch = document.getElementById('formSearch');
 const formLogin = document.getElementById('formLogin');
 const noteForm = document.getElementById('noteForm');
 let winesListElements = [];
-
-// open - container - close : connexion
-let loginButton = $('#login');
-let loginContainer = $('#loginContainer');
-
+// array comme ça easier to modifier
+let winesLiked = [];
 
 /*************************************************** MAIN *************************************************/
 window.addEventListener('load', () => {
@@ -262,7 +259,9 @@ window.addEventListener('load', () => {
     getWines(true);
 
     /* Interval reload sessionStorage */
-    setInterval(getWines(false), 20000);
+    setInterval(() => {
+        getWines(false)
+    }, 20000);
 
     /* Recherche vins */
     formSearch.addEventListener('submit', (event) => {
@@ -309,6 +308,7 @@ function displayAllWines() {
     for (let i = 0; i < sessionStorage.length ; i++) {
         let wine = JSON.parse(sessionStorage[i+1]);
         html += '<li class="btn" id="wine-' + wine.id + '">' + wine.name.toUpperCase() + '</li>';
+
     }
 
     winesList.innerHTML = html;
@@ -403,7 +403,7 @@ function getWineData(id) {
     }
 
     //Afficher image
-    $('#vin-img img').attr("src", "https://cruth.phpnet.org/epfc/caviste/public/pics/" + wine.picture);
+    $('#vin-img img').attr("src", "https://cruth.phpnet.org/epfc/caviste/public/pics/" + wine.picture).addClass("slick");
 
     //Afficher Data
     $('#vin-data').html(`<h2><span id="wine-id">#${wine.id}</span><span id="wine-name"> ${wine.name.toUpperCase()}</span></h2>
@@ -414,12 +414,13 @@ function getWineData(id) {
                                     <p><b>Capacity :</b> ${wine.capacity} cl</p>
                                     <p><b>Color :</b> ${wine.color}</p>
                                     <p><b>Price :</b> ${wine.price} €</p>
-                                    <button class="btn btn-light btn-sm"><i class="fa-solid fa-camera"></i> Add a picture</button>
+                                    <button class="btn btn-light btn-sm" id="addImage"><i class="fa-solid fa-camera"></i> Add a picture</button>
                                     <button class="btn btn-light btn-sm" id="addNote"><i class="fa-solid fa-pen"></i> Add a note</button>
                                     <button id="likeBtn" class="btn btn-light btn-sm">
                                         <i class="fa-solid fa-heart"></i> Like this wine 
                                         <span id="likes" class="btn btn-danger btn-sm"></span>
                                     </button>`);
+
 
     // display likes in button
     displayLikes(id);
@@ -430,13 +431,21 @@ function getWineData(id) {
     //Getting Comments
     getWineComments(id);
 
+    //get personal note of current wine
+    getPersonalNote(id);
+
     //Pop-ups opening
     popupDisplayer(document.getElementById('addNote'), document.getElementById('noteContainer'), document.getElementById('noteCross'));
-    popupDisplayer(document.getElementById('login'), document.getElementById('loginContainer'), document.getElementById('loginCross'))
+    popupDisplayer(document.getElementById('login'), document.getElementById('loginContainer'), document.getElementById('loginCross'));
+    popupDisplayer(document.getElementById('addImage'), document.getElementById('uploadContainer'), document.getElementById('uploadCross'));
 
     //Add like on a wine
     document.getElementById('likeBtn').addEventListener('click', e => {
         addLike(id, getCookie('username'));
+    })
+
+    noteForm.addEventListener('submit', e => {
+        addNote(noteForm, e);
     })
 }
 
@@ -461,7 +470,11 @@ function displayLikes(id)
     fetch(apiURL + 'wines/' + id + '/likes-count')
         .then(response => response.json())
         .then(json => {
-            $('#likes').html('<i class="fa fa-heart-o"> ' + json.total)
+            if (winesLiked.includes(id)) {
+                $('#likes').html('<i class="fa fa-heart"> ' + json.total);
+            } else {
+                $('#likes').html('<i class="fa fa-heart-o"> ' + json.total);
+            }
         })
 }
 
@@ -479,7 +492,15 @@ function popupDisplayer(open, container, close)
 {
     open.addEventListener('click', () => {
         container.style.display = 'block';
-        setNoteFormData();
+
+        switch (container.id){
+            case 'noteContainer' : setNoteFormData();
+                break;
+            case 'uploadContainer': setUploadFormData();
+                break;
+
+        }
+
         characterCount();
 
         close.addEventListener('click', () => {
@@ -492,6 +513,13 @@ function popupDisplayer(open, container, close)
 function setNoteFormData()
 {
     $('#wine-name-note').html($('#wine-name').text() + ', n°<span id="note-wine-id">' + $('#wine-id').text().substring(1) + '</span>');
+    setElementFocus('#ui-id-3');
+    $('#noteContainer textarea').text($('#tabs-3').text());
+}
+
+function setUploadFormData()
+{
+    $('#wine-name-image').html($('#wine-name').text() + ', n°<span id="image-wine-id">' + $('#wine-id').text().substring(1) + '</span>');
 }
 
 function characterCount()
@@ -510,13 +538,19 @@ function characterCount()
 
 function addLike(wineId, username){
 
+    let isLikingWine = true;
+    if (winesLiked.includes(wineId)) {
+        isLikingWine = false;
+    }
+
+    const credentials = username + ':123';
     const options = {
         'method': 'PUT',
-        'body': JSON.stringify({ "like" : true }),	//Try with true or false
+        'body': JSON.stringify({ "like" : isLikingWine }),	//Try with true or false
         'mode': 'cors',
         'headers': {
             'content-type': 'application/json; charset=utf-8',
-            'Authorization': 'Basic '+btoa(getCookie(username + ':123'))	//FIXME
+            'Authorization': 'Basic '+btoa(credentials)	//FIXME
         }
     };
 
@@ -525,17 +559,101 @@ function addLike(wineId, username){
     fetch(apiURL + fetchURL, options).then(function(response) {
         if(response.ok) {
             response.json().then(function(data){
-                console.log(data);
+                isLikingWine ? likeWine(wineId) : dislikeWine(wineId);
+                resetLikes();
+                getUserLikes(getCookie('userid'));
             });
         }
     });
 }
 
+function getPersonalNote(wineId){
+ù
+    let credentials = getCookie('username') + ':123';
+
+    const options = {
+        'method': 'GET',
+        'mode': 'cors',
+        'headers': {
+            'content-type': 'application/json; charset=utf-8',
+            'Authorization': 'Basic ' + btoa(credentials)	//Try with other credentials (login:password)
+        }
+    }
+
+    fetch(apiURL + 'wines/' + wineId + '/notes', options)
+        .then(response => response.json())
+        .then(data => {
+            $('#tabs-3').text(data.note);
+        })
+}
+
 function addNote(form, event){
 
     event.preventDefault();
+    let credentials = getCookie('username') + ':123';
+    const formdata = new FormData(form);
+    let content = formdata.get('note')
 
+    const options = {
+        'method': 'PUT',
+        'body': JSON.stringify({"note": content }),	//Try with true or false
+        'mode': 'cors',
+        'headers': {
+            'content-type': 'application/json; charset=utf-8',
+            'Authorization': 'Basic ' + btoa(credentials)	//Try with other credentials (login:password)
+        }
+    }
 
+    let wineId = $('#note-wine-id').text();
+    const fetchURL = 'wines/' + wineId + '/notes';
+
+    fetch(apiURL + fetchURL, options)
+        .then(function(response) {
+            if(response.ok) {
+                response.json().then(function(data){
+                    getWineData(wineId);
+                    $('.popup').css("display", "none");
+                });
+            } else {
+                console.log('API error !');
+            }
+        });
+}
+
+function getUserLikes(userId){
+
+    fetch(apiURL + 'users/' + userId + '/likes/wines')
+        .then(response => response.json())
+        .then(data => {
+            for (const wine of data){
+                winesLiked.push(wine.id);
+            }
+        });
+}
+
+function resetLikes()
+{
+    winesLiked = [];
+}
+
+function likeWine(wineId)
+{
+    winesLiked.push(wineId);
+    $('#likes i').removeClass('fa-heart-o');
+    $('#likes i').addClass('fa-heart');
+
+    $('#likes i').text(' ' + (parseInt($('#likes i').text()) + 1))
+}
+
+function dislikeWine(wineId)
+{
+    for (let i = 0; i < winesLiked.length; i++) {
+        if (winesLiked[i] === wineId) winesLiked.splice(i);
+    }
+
+    $('#likes i').removeClass('fa-heart');
+    $('#likes i').addClass('fa-heart-o');
+    $('#likes i').text(' ' + (parseInt($('#likes i').text()) - 1))
 }
 
 /********************************************** CASUAL FUNCTIONS ******************************************************/
@@ -574,18 +692,23 @@ function login(form, event){
         .then(function(response) {
             if (response.ok) {
                 response.json().then(function (data) {
-                    console.log(response)
-                    document.cookie = "username=" + form.username.value;
-                    document.cookie = "userid=" + data.id;
-                    document.cookie = "usermail=" + data.email;
+                    if (!data.success) {
+                        $('#login-error').text('Identifiants de connexion invalides !');
+                    } else {
+                        document.cookie = "username=" + form.username.value;
+                        document.cookie = "userid=" + data.id;
+                        document.cookie = "usermail=" + data.email;
+
+                        $('.popup').css("display", "none");
+                        $('#login').text(form.username.value);
+                        resetLikes();
+                        getUserLikes(getCookie('userid'));
+                    }
                 })
             }
             //FIXME Besoin d'un mesage d'erreur
             else alert("NO");
         });
-
-    $('.popup').css("display", "none");
-    $('#login').text(form.username.value);
 }
 
 function getCookie(cookieName) {

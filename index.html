@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="fr">
 <!-- SLIDESHOW https://www.w3schools.com/howto/howto_js_slideshow.asp -->
 <head>
@@ -12,13 +12,11 @@
     <link rel="stylesheet" href="jqueryui/jquery-ui.structure.css">
     <link rel="stylesheet" href="jqueryui/jquery-ui.theme.css">
 
-    <!-- Import Slick library
-    <link rel="stylesheet" type="text/css" href="slick/slick.css"/>
-    -->
-    <!--
-    // Add the new slick-theme.css if you want the default styling
-    <link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
-    -->
+    <!-- Add the slick-theme.css if you want default styling -->
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+    <!-- Add the slick-theme.css if you want default styling -->
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
+
    <!-- Link to own stylesheet -->
     <link rel="stylesheet" href="style.css"/>
 
@@ -28,6 +26,9 @@
 
     <!-- Call to Parsley  !! JQUERY DEPENDANT !! -->
     <script src="parsley.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
     <!-- Coll to FontAwesome library -->
     <script src="https://kit.fontawesome.com/f92d7e8a24.js" crossorigin="anonymous"></script>
     <title>Mon Cellier</title>
@@ -38,6 +39,19 @@
     <div id="loader"></div>
     <!-- End Loader -->
 
+    <!-- Image upload popup -->
+    <div id="uploadContainer" class="popup">
+        <div class="popupForm">
+            <div id="uploadCross" class="cross">&cross;</div>
+            <h2 style="text-align: center">Ajout d'une photo pour <br><span style="color: fuchsia" id="wine-name-image"></span></h2>
+            <form id="uploadForm" action="#" method="post" enctype="multipart/form-data">
+                <input name="uploadImage" type="file" data-parsley-filemaxmegabytes="2" data-parsley-trigger="submit" data-parsley-filemimetypes="image/jpeg, image/png" />
+                <input type="submit" />
+            </form>
+        </div>
+    </div>
+    <!-- End of popup -->
+
     <!-- Div for adding a note -->
     <div id="noteContainer" class="popup">
         <div class="popupForm" >
@@ -45,10 +59,10 @@
             <h2 style="text-align: center">Note pour <br><span style="color: fuchsia" id="wine-name-note"></span></h2>
             <form id="noteForm">
                 <label>
-                    <span style="margin-left: 55px" id="textareaCounter">144</span> caractères restants
-                    <textarea name="textarea" id="textarea" maxlength="144" cols="80" rows="6" placeholder="Ajouter une note ..."></textarea>
+                    <span style="margin-left: 55px" id="textareaCounter">200</span> caractères restants
+                    <textarea name="note" id="textarea" maxlength="200" cols="80" rows="6" placeholder="Ajouter une note ..."></textarea>
                 </label>
-                <button class="btn btn-danger">Ajouter la note</button>
+                <button class="btn btn-danger">Enregistrer la note</button>
             </form>
         </div>
     </div>
@@ -72,7 +86,7 @@
         <div id="header-container">
             <!-- Partie supérieur LOGO/TITRE/HOME/ABOUT-->
             <div id="header-left">
-                <img id="logo" src="https://cdn.dribbble.com/users/4157515/screenshots/8766397/media/b434c946eca5550c5d021018e07a5c2f.png?compress=1&resize=800x600&vertical=top" alt="logo">
+                <img id="logo" src="data:image/png;base64,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" alt="logo">
                 <h2>Mon Cellier</h2>
             </div>
             <div id="header-right">
@@ -99,7 +113,7 @@
         <div class="col-md-8">
             <div class="row">
                 <div class="col-md-6" id="vin-img">
-                    <img id="vin" src="#" alt="vin">
+                    <img id="vin" src="#" alt="vin" class="slick">
                 </div>
                 <div class="col-md-6" id="vin-data">
                 </div>
