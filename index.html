@@ -57,13 +57,13 @@
     <div id="noteContainer" class="popup">
         <div class="popupForm" >
             <div id="noteCross" class="cross">&cross;</div>
-            <h2 style="text-align: center">Note pour <br><span style="color: fuchsia" id="wine-name-note"></span></h2>
+            <h2 class="centered-text">Note pour <br><span class="fuchsia-text" id="wine-name-note"></span></h2>
             <form id="noteForm">
                 <label>
-                    <span style="margin-left: 55px" id="textareaCounter">200</span> caractères restants
-                    <textarea name="note" id="textarea" maxlength="200" cols="80" rows="6" placeholder="Ajouter une note ..."></textarea>
+                    <span class="ml-form-el">200</span> caractères restants
+                    <textarea class="ml-form-el" name="note" maxlength="200" cols="80" rows="6" placeholder="Ajouter une note ..."></textarea>
                 </label>
-                <button class="btn btn-danger">Enregistrer la note</button>
+                <button style="margin-left: 55px" class="btn btn-danger">Enregistrer la note</button>
             </form>
         </div>
     </div>
@@ -73,14 +73,14 @@
     <div id="commentContainer" class="popup">
         <div class="popupForm" >
             <div id="commentCross" class="cross">&cross;</div>
-            <h2 style="text-align: center">Commentaire pour <br><span style="color: fuchsia" id="wine-name-comment"></span></h2>
+            <h2 class="centered-text">Commentaire pour <br><span class="fuchsia-text" id="wine-name-comment"></span></h2>
             <form id="commentForm">
                 <label>
-                    <span style="margin-left: 55px" id="textareaCounter">200</span> caractères restants
-                    <textarea name="comment" id="textarea" maxlength="200" cols="80" rows="6" placeholder="Ajouter un commentaire ..."></textarea>
+                    <span class="ml-form-el">200</span> caractères restants
+                    <textarea class="ml-form-el" name="comment" maxlength="200" cols="80" rows="6" placeholder="Ajouter un commentaire ..."></textarea>
                 </label>
-                <button class="btn btn-danger">Enregistrer le commentaire</button>
-                <button id="resetComment" type="button" class="btn btn-danger">Supprimer le commentaire</button>
+                <button style="margin-left: 55px" class="btn btn-danger">Enregistrer le commentaire</button>
+                <!--<button id="resetComment" type="button" class="btn btn-danger">Supprimer le commentaire</button>-->
             </form>
         </div>
     </div>
@@ -126,7 +126,7 @@
                     <select class="form-select" name="country" id="formFilterSelect"></select>
                 </label>
                 <button class="btn btn-dark">Filtrer</button>
-                <button id="filterReset" class="btn btn-danger" type="button">Annuler Filtre</button>
+                <button id="filterReset" class="btn btn-danger" type="button" style="display:none;">Annuler Filtre</button>
             </form>
         </nav>
     </header>
@@ -164,6 +164,16 @@
     </footer>
 </div>
 </body>
+<!-- ALL FUNCTIONS AND VAR -->
+<script src="variables.js"></script>
+<script src="wines.js"></script>
+<script src="winesList.js"></script>
+<script src="forms.js"></script>
+<script src="utils.js"></script>
+<script src="likes.js"></script>
+<script src="comments.js"></script>
+<script src="notes.js"></script>
+<!-- MAIN SCRIPT -->
 <script src="script.js"></script>
 <script>
     $( function() {

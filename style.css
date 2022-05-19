@@ -130,7 +130,7 @@ footer{
 
 #tabs{
     margin-top: 10px;
-    height: 150px;
+    height: 225px;
     overflow: hidden;
 }
 
@@ -181,7 +181,7 @@ footer{
 }
 
 
-#loader, #noteContainer, #loginContainer, #uploadContainer{
+#loader, #noteContainer, #loginContainer, #uploadContainer, #commentContainer{
     position: absolute;
     top: 0;
     left: 0;
@@ -190,11 +190,11 @@ footer{
     z-index: 100;
     border-radius: 6px;
 }
-#loader{
-    background: url("images/loader.gif") no-repeat center center;
-    background-color: white;
 
+#loader{
+    background: white url("images/loader.gif") no-repeat center center;
 }
+
 .popup{
     display: none;
     background-color: rgba(68, 68, 68, 0.5);
@@ -214,23 +214,35 @@ footer{
     background-color: white;
 }
 
-#textarea, #noteForm button{
-    margin: auto;
-    display: flex;
-    width: 80%;
-    justify-content: center;
-
+.fuchsia-text {
+    color: fuchsia;
 }
 
-#textarea{
+.centered-text {
+    text-align: center;
+}
+
+.ml-form-el {
+    margin-left: 55px; !important;
+}
+
+#noteForm button{
+    text-align: center;
+    margin: auto;
+    width: 80%;
+}
+
+textarea{
     resize: none;
     padding: 15px;
+
 }
 
 .cross{
     color: fuchsia;
     float: right;
 }
+
 .cross:hover{
     cursor: pointer;
     
