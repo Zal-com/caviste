@@ -248,10 +248,15 @@ const flagsList = [
 const winesList = document.getElementById('wines-list');
 const formSearch = document.getElementById('formSearch');
 const formLogin = document.getElementById('formLogin');
+const formFilter = document.getElementById('formFilter');
 const noteForm = document.getElementById('noteForm');
+const commentForm = document.getElementById('commentForm');
+const resetFilterBtn = document.getElementById('filterReset');
 let winesListElements = [];
 // array comme ça easier to modifier
 let winesLiked = [];
+
+const countriesAvailable = [];
 
 /*************************************************** MAIN *************************************************/
 window.addEventListener('load', () => {
@@ -267,12 +272,19 @@ window.addEventListener('load', () => {
     formSearch.addEventListener('submit', (event) => {
         searchWines(formSearch, event);
     })
+    /* filtre des vins */
+    formFilter.addEventListener('submit', (event) => {
+       filterWineByCountry(formFilter, event);
+    });
     /* Login */
     formLogin.addEventListener('submit', (e) =>{
         login(formLogin, e)
     } );
+    resetFilterBtn.addEventListener('click', () => {
+        displayAllWines();
+    })
 
-    // close pop ups
+    // close pop ups escape key
     window.addEventListener('keyup', (event) => {
         if (event.key === "Escape") {
             document.querySelectorAll('.popup').forEach(popup => {
@@ -298,7 +310,28 @@ function getWines(hasToDisplay)
                 sessionStorage.setItem(wine.id, JSON.stringify(wine))
             }
             if (hasToDisplay) displayAllWines();
+
+            // get countries having a wine
+            getCountries();
         });
+}
+
+function getCountries()
+{
+    let wine, country;
+    for (let i = 0; i < sessionStorage.length ; i++) {
+        wine = JSON.parse(sessionStorage[i+1]);
+        country = wine.country;
+
+        if (!countriesAvailable.includes(country)) countriesAvailable.push(country);
+    }
+
+    let html = '';
+    for (let i = 0; i < countriesAvailable.length; i++) {
+        html += '<option value="' + countriesAvailable[i] + '">' + countriesAvailable[i] + '</option>';
+    }
+
+    $('#formFilterSelect').html(html);
 }
 
 /* Tous les vins */
@@ -355,6 +388,28 @@ function createWinesListElements(name, id)
     li.id = 'wine-' + id;
     li.className = 'btn'; // bootstrap classes
     winesList.appendChild(li);
+}
+
+function filterWineByCountry(form, event)
+{
+    event.preventDefault();
+
+    let country = form.country.value;
+
+    fetch(apiURL + 'wines?key=country&val=' + country + '&sort=year')
+        .then(response => response.json())
+        .then(json => {
+            winesList.innerHTML = '';
+            for(const wine of json) {
+                createWinesListElements(wine.name.toUpperCase(), wine.id)
+            }
+            // get all li's of list of wines
+            winesListElements = document.querySelectorAll('#wines-list li');
+            // get data
+            winesListClickListener();
+            // Set focus on first element of list
+            setElementFocus('#wines-list li:first-child');
+        })
 }
 
 function searchWines(form, event)
@@ -447,6 +502,10 @@ function getWineData(id) {
     noteForm.addEventListener('submit', e => {
         addNote(noteForm, e);
     })
+
+    commentForm.addEventListener('submit', event => {
+        addComment(commentForm, event);
+    })
 }
 
 function getWineComments(id)
@@ -454,7 +513,7 @@ function getWineComments(id)
     fetch(apiURL + 'wines/' + id + '/comments')
         .then(response => response.json())
         .then(json => {
-            let commentsHTML = '';
+            let commentsHTML = '<button class="btn btn-dark" id="addComment">Ajouter/retirer commentaire</button><hr>';
             for (const comment of json) {
                 commentsHTML += `<p>${comment.content}</p><hr>`
             }
@@ -462,6 +521,8 @@ function getWineComments(id)
                 commentsHTML = '<p class="no-comment">Pas de commentaires</p>'
             }
             $('#tabs-2').html(commentsHTML);
+
+            popupDisplayer(document.getElementById('addComment'), document.getElementById('commentContainer'), document.getElementById('commentCross'));
         })
 }
 
@@ -494,11 +555,19 @@ function popupDisplayer(open, container, close)
         container.style.display = 'block';
 
         switch (container.id){
-            case 'noteContainer' : setNoteFormData();
+            case 'noteContainer' :
+                setNoteFormData();
                 break;
-            case 'uploadContainer': setUploadFormData();
+            case 'uploadContainer':
+                setUploadFormData();
                 break;
-
+            case 'commentContainer' :
+                setCommentFormData();
+                let btnDeleteComment = document.getElementById('resetComment');
+                btnDeleteComment.addEventListener('click', () => {
+                    deleteComment(getCookie('userid'), document.getElementById('comment-wine-id').innerText);
+                })
+                break;
         }
 
         characterCount();
@@ -520,6 +589,11 @@ function setNoteFormData()
 function setUploadFormData()
 {
     $('#wine-name-image').html($('#wine-name').text() + ', n°<span id="image-wine-id">' + $('#wine-id').text().substring(1) + '</span>');
+}
+
+function setCommentFormData()
+{
+    $('#wine-name-comment').html($('#wine-name').text() + ', n°<span id="comment-wine-id">' + $('#wine-id').text().substring(1) + '</span>');
 }
 
 function characterCount()
@@ -568,7 +642,7 @@ function addLike(wineId, username){
 }
 
 function getPersonalNote(wineId){
-ù
+
     let credentials = getCookie('username') + ':123';
 
     const options = {
@@ -591,16 +665,16 @@ function addNote(form, event){
 
     event.preventDefault();
     let credentials = getCookie('username') + ':123';
-    const formdata = new FormData(form);
-    let content = formdata.get('note')
+    const formData = new FormData(form);
+    let content = formData.get('note')
 
     const options = {
         'method': 'PUT',
-        'body': JSON.stringify({"note": content }),	//Try with true or false
+        'body': JSON.stringify({"note": content }),
         'mode': 'cors',
         'headers': {
             'content-type': 'application/json; charset=utf-8',
-            'Authorization': 'Basic ' + btoa(credentials)	//Try with other credentials (login:password)
+            'Authorization': 'Basic ' + btoa(credentials)
         }
     }
 
@@ -618,6 +692,46 @@ function addNote(form, event){
                 console.log('API error !');
             }
         });
+}
+
+function addComment(form, event)
+{
+    event.preventDefault();
+
+    let credentials = getCookie('username') + ':123';
+    const formData = new FormData(form);
+    let content = formData.get('comment')
+
+    const options = {
+        'method': 'PUT',
+        'body': JSON.stringify({"content": content }),
+        'mode': 'cors',
+        'headers': {
+            'content-type': 'application/json; charset=utf-8',
+            'Authorization': 'Basic ' + btoa(credentials)
+        }
+    }
+
+    let wineId = $('#comment-wine-id').text();
+
+    fetch(apiURL + 'wines/' + wineId + '/comments', options)
+        .then(function(response) {
+            if(response.ok) {
+                response.json().then(function(data){
+                    getWineData(wineId);
+                    $('.popup').css("display", "none");
+                });
+            } else {
+                console.log('API error !');
+            }
+        });
+}
+
+function deleteComment(userId, wineId)
+{
+    console.log(userId, wineId);
+
+    // fetch DELETE
 }
 
 function getUserLikes(userId){
