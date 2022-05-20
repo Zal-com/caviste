@@ -257,5 +257,5 @@ let winesListElements = [];
 let winesLiked = [];
 //
 let isFilterActive = false;
-
+let isEditingComment = false;
 const countriesAvailable = [];
