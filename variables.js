@@ -246,6 +246,7 @@ const flagsList = [
     {"name": "Zimbabwe", "code": "ZW"}
 ];
 const winesList = document.getElementById('wines-list');
+const formUpload = document.getElementById('uploadForm')
 const formSearch = document.getElementById('formSearch');
 const formLogin = document.getElementById('formLogin');
 const formFilter = document.getElementById('formFilter');

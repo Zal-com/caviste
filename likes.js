@@ -1,3 +1,9 @@
+/**
+ * It takes a wineId and a username, and if the user is liking the wine, it sends a PUT request to the API with the body {
+ * "like" : true }. If the user is disliking the wine, it sends a PUT request with the body { "like" : false }
+ * @param wineId - The id of the wine you want to like/dislike
+ * @param username - The username of the user who is liking the wine.
+ */
 function addLike(wineId, username){
 
     let isLikingWine = true;
@@ -29,6 +35,11 @@ function addLike(wineId, username){
     });
 }
 
+/**
+ * It takes a userId as an argument, and then uses the fetch API to make a GET request to the API endpoint that returns all
+ * the wines that the user has liked. It then loops through the response and pushes each wine's id to the winesLiked array
+ * @param userId - the id of the user
+ */
 function getUserLikes(userId){
 
     fetch(apiURL + 'users/' + userId + '/likes/wines')
@@ -40,11 +51,19 @@ function getUserLikes(userId){
         });
 }
 
+/**
+ * The function `resetLikes()` resets the `winesLiked` array to an empty array.
+ */
 function resetLikes()
 {
     winesLiked = [];
 }
 
+/**
+ * When the user clicks the heart icon, add the wine ID to the winesLiked array and update the heart icon to show that the
+ * user has liked the wine.
+ * @param wineId - The id of the wine that was liked.
+ */
 function likeWine(wineId)
 {
     winesLiked.push(wineId);
@@ -54,6 +73,10 @@ function likeWine(wineId)
     $('#likes i').text(' ' + (parseInt($('#likes i').text()) + 1))
 }
 
+/**
+ * It removes the wine from the list of liked wines and updates the UI
+ * @param wineId - The id of the wine you want to like/dislike
+ */
 function dislikeWine(wineId)
 {
     for (let i = 0; i < winesLiked.length; i++) {

@@ -12,12 +12,6 @@ function popupDisplayer(open, container, close)
                 break;
             case 'commentContainer' :
                 setCommentFormData();
-                /*
-                let btnDeleteComment = document.getElementById('resetComment');
-                btnDeleteComment.addEventListener('click', () => {
-                    deleteComment(getCookie('userid'), document.getElementById('comment-wine-id').innerText);
-                })
-                 */
                 break;
         }
 
@@ -90,11 +84,10 @@ function login(form, event){
     const credentials= form.username.value + ':' + form.pwd.value;
     const options = {
         'method': 'GET',
-        //'body': JSON.stringify({ "like" : true }),	//Try with true or false
         'mode': 'cors',
         'headers': {
             'content-type': 'application/json; charset=utf-8',
-            'Authorization': 'Basic '+btoa(credentials)	//Try with other credentials (login:password)
+            'Authorization': 'Basic '+btoa(credentials)
         }
     };
 
@@ -118,8 +111,6 @@ function login(form, event){
                     }
                 })
             }
-            //FIXME Besoin d'un mesage d'erreur
-            else alert("NO");
         });
 }
 
@@ -169,6 +160,9 @@ function characterCount()
 
 //////// SET DATA IN FORM
 
+/**
+ * It sets the note form data
+ */
 function setNoteFormData()
 {
     $('#wine-name-note').html($('#wine-name').text() + ', n°<span id="note-wine-id">' + $('#wine-id').text().substring(1) + '</span>');
@@ -176,12 +170,93 @@ function setNoteFormData()
     $('#noteContainer textarea').text($('#tabs-3').text());
 }
 
+/**
+ * It sets the upload form data
+ */
 function setUploadFormData()
 {
     $('#wine-name-image').html($('#wine-name').text() + ', n°<span id="image-wine-id">' + $('#wine-id').text().substring(1) + '</span>');
 }
 
+/**
+ * It sets the wine name and id in the comment form
+ */
 function setCommentFormData()
 {
     $('#wine-name-comment').html($('#wine-name').text() + ', n°<span id="comment-wine-id">' + $('#wine-id').text().substring(1) + '</span>');
 }
+
+var app = app || {};
+
+// Utils
+(function ($, app) {
+    'use strict';
+
+    app.utils = {};
+
+    app.utils.formDataSuppoerted = (function () {
+        return !!('FormData' in window);
+    }());
+
+}(jQuery, app));
+
+// Parsley validators
+(function ($, app) {
+    'use strict';
+
+    window.Parsley
+        .addValidator('filemaxmegabytes', {
+            requirementType: 'string',
+            validateString: function (value, requirement, parsleyInstance) {
+
+                if (!app.utils.formDataSuppoerted) {
+                    return true;
+                }
+
+                var file = parsleyInstance.$element[0].files;
+                var maxBytes = requirement * 1048576;
+
+                if (file.length == 0) {
+                    return true;
+                }
+
+                return file.length === 1 && file[0].size <= maxBytes;
+
+            },
+            messages: {
+                en: 'File is too big'
+            }
+        })
+        .addValidator('filemimetypes', {
+            requirementType: 'string',
+            validateString: function (value, requirement, parsleyInstance) {
+
+                if (!app.utils.formDataSuppoerted) {
+                    return true;
+                }
+
+                var file = parsleyInstance.$element[0].files;
+
+                if (file.length == 0) {
+                    return true;
+                }
+
+                var allowedMimeTypes = requirement.replace(/\s/g, "").split(',');
+                return allowedMimeTypes.indexOf(file[0].type) !== -1;
+
+            },
+            messages: {
+                en: 'File type not allowed'
+            }
+        });
+
+}(jQuery, app));
+
+
+// Parsley Init
+(function ($, app) {
+    'use strict';
+
+    $('#uploadForm').parsley();
+
+}(jQuery, app));

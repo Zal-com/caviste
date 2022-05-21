@@ -1,9 +1,16 @@
+/**
+ * > Sets focus to the element passed as a parameter
+ * @param element - the element to set focus to
+ */
 function setElementFocus(element)
 {
-    // sets focus to Description tab
     $(element).click();
 }
 
+/**
+ * It removes the active class from all elements in a list
+ * @param list - The list of elements you want to remove the active class from.
+ */
 function removeActiveClass(list)
 {
     list.forEach(element => {
@@ -11,6 +18,11 @@ function removeActiveClass(list)
     })
 }
 
+/**
+ * It returns the value of the cookie whose name is passed as a parameter
+ * @param cookieName - The name of the cookie you want to get.
+ * @returns The value of the cookie.
+ */
 function getCookie(cookieName) {
     if(cookieName!='') {
         let allCookies = decodeURIComponent(document.cookie);

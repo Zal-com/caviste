@@ -1,3 +1,7 @@
+/**
+ * It fetches the wines from the API, stores them in the session storage, and then displays them
+ * @param hasToDisplay - a boolean that indicates whether the wines should be displayed or not.
+ */
 function getWines(hasToDisplay)
 {
     fetch(apiURL + 'wines')
@@ -8,11 +12,12 @@ function getWines(hasToDisplay)
             }
             if (hasToDisplay) displayAllWines();
 
-            // get countries having a wine
             getCountries();
         });
 }
 
+
+/* Displaying the data of the wine with the given id. */
 function getWineData(id) {
 
     let wine = JSON.parse(sessionStorage[id]);
@@ -23,10 +28,12 @@ function getWineData(id) {
         }
     }
 
-    //Afficher image
-    $('#vin-img img').attr("src", "https://cruth.phpnet.org/epfc/caviste/public/pics/" + wine.picture).addClass("slick");
 
-    //Afficher Data
+    /* Setting the source of the image to the picture of the wine. */
+    $('#vin-img img').attr("src", "https://cruth.phpnet.org/epfc/caviste/public/pics/" + wine.picture);
+
+
+    /* Displaying the data of the wine with the given id. */
     $('#vin-data').html(`<h2><span id="wine-id">#${wine.id}</span><span id="wine-name"> ${wine.name.toUpperCase()}</span></h2>
                                     <p><b>Grapes :</b> ${wine.grapes}</p>
                                     <p><b>Country :</b> ${wine.country} <img src="${flagsAPI + flagCode}" alt="${wine.country}" id="flag"></p>
@@ -43,24 +50,23 @@ function getWineData(id) {
                                     </button>`);
 
 
-    // display likes in button
+
     displayLikes(id);
 
-    //Tabs
     $('#tabs-1').text(wine.description);
 
-    //Getting Comments
     getWineComments(id);
 
-    //get personal note of current wine
+    if(getCookie('username')){
+        getWinePictures(id)
+    }
+
     getPersonalNote(id);
 
-    //Pop-ups opening
-    popupDisplayer(document.getElementById('addNote'), document.getElementById('noteContainer'), document.getElementById('noteCross'));
-    popupDisplayer(document.getElementById('login'), document.getElementById('loginContainer'), document.getElementById('loginCross'));
-    popupDisplayer(document.getElementById('addImage'), document.getElementById('uploadContainer'), document.getElementById('uploadCross'));
+    popupDisplayer(document.getElementById('addNote'), document.getElementById('noteContainer'), document.getElementById('noteCross'), true);
+    popupDisplayer(document.getElementById('login'), document.getElementById('loginContainer'), document.getElementById('loginCross'), true);
+    popupDisplayer(document.getElementById('addImage'), document.getElementById('uploadContainer'), document.getElementById('uploadCross'), true);
 
-    //Add like on a wine
     document.getElementById('likeBtn').addEventListener('click', e => {
         addLike(id, getCookie('username'));
     })

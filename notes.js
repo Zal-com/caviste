@@ -1,3 +1,8 @@
+/**
+ * It takes the form data, sends it to the API, and then updates the page with the new data
+ * @param form - the form that was submitted
+ * @param event - the event that triggered the function
+ */
 function addNote(form, event){
 
     event.preventDefault();
@@ -31,6 +36,10 @@ function addNote(form, event){
         });
 }
 
+/**
+ * It gets the personal note for a wine from the API and displays it in the third tab
+ * @param wineId - The id of the wine that we want to get the personal note for.
+ */
 function getPersonalNote(wineId){
 
     let credentials = getCookie('username') + ':123';

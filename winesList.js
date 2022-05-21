@@ -1,4 +1,6 @@
-/* Tous les vins */
+/**
+ * It loops through the sessionStorage and creates a list of wines
+ */
 function displayAllWines() {
     let html = '';
 
@@ -10,17 +12,16 @@ function displayAllWines() {
 
     winesList.innerHTML = html;
 
-    // click listner of li's
     winesListClickListener();
 
-    //Set focus on first element of list
     setElementFocus('#wines-list li:first-child');
 
-    // hide loader on first time page loaded
     $('#loader').hide();
 }
 
-/* Wines list click */
+/**
+ * It adds a click event listener to each list item in the list of wines
+ */
 function winesListClickListener()
 {
     // get all li's of list of wine
@@ -44,6 +45,12 @@ function winesListClickListener()
     });
 }
 
+/**
+ * It creates a new list item element, sets its text to the name of the wine, sets its id to the id of the wine, and adds
+ * it to the wines list
+ * @param name - the name of the wine
+ * @param id - the id of the wine
+ */
 function createWinesListElements(name, id)
 {
     let li = document.createElement('li');
@@ -53,6 +60,10 @@ function createWinesListElements(name, id)
     winesList.appendChild(li);
 }
 
+/**
+ * It creates an `li` element, adds a `h3` element to it, adds a class to the `li` element, and then adds the `li` element
+ * to the `winesList` element
+ */
 function showEmptyListMsg()
 {
     let li = document.createElement('li');

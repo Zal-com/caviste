@@ -1,3 +1,8 @@
+/**
+ * It takes the form data, sends it to the API, and then updates the page with the new comment
+ * @param form - the form that was submitted
+ * @param event - the event that triggered the function
+ */
 function addComment(form, event)
 {
     event.preventDefault();
@@ -31,6 +36,10 @@ function addComment(form, event)
         });
 }
 
+/**
+ * It fetches the comments of a wine, then displays them in the comments tab
+ * @param id - the id of the wine
+ */
 function getWineComments(id)
 {
     fetch(apiURL + 'wines/' + id + '/comments')
@@ -46,13 +55,17 @@ function getWineComments(id)
             $('#tabs-2').html(commentsHTML);
 
             let editables = document.querySelectorAll('.editable');
-            // double click to modify
+
             transformCommentToEdit(editables);
-            // open comment box listener
-            popupDisplayer(document.getElementById('addComment'), document.getElementById('commentContainer'), document.getElementById('commentCross'));
+
+            popupDisplayer(document.getElementById('addComment'), document.getElementById('commentContainer'), document.getElementById('commentCross'), true);
         })
 }
 
+/**
+ * It transforms a comment into an editable form when double clicked
+ * @param editables - the comments that can be edited
+ */
 function transformCommentToEdit(editables)
 {
     let save, cancel, destroy;
@@ -95,6 +108,13 @@ function transformCommentToEdit(editables)
     })
 }
 
+/**
+ * It takes the form, the comment id and the wine id, gets the content of the comment, sends a PUT request to the API with
+ * the new content and then calls the getWineData function to refresh the page
+ * @param form - the form that contains the comment to be edited
+ * @param $commentId - the id of the comment to be edited
+ * @param $commentWineId - the id of the wine the comment is attached to
+ */
 function editComments(form, $commentId, $commentWineId)
 {
     isEditingComment = false;
@@ -124,6 +144,11 @@ function editComments(form, $commentId, $commentWineId)
         });
 }
 
+/**
+ * It deletes a comment from the database
+ * @param $commentId - the id of the comment to be deleted
+ * @param $commentWineId - the id of the wine that the comment belongs to
+ */
 function deleteComment($commentId, $commentWineId)
 {
     isEditingComment = false;
@@ -151,6 +176,14 @@ function deleteComment($commentId, $commentWineId)
 
 }
 
+/**
+ * This function resets the appearance of a comment to its original state.
+ * @param $comment - the comment element that is being edited
+ * @param $commentStartingValue - The original value of the comment before it was edited.
+ * @param $commentId - The id of the comment that is being edited
+ * @param $commentUserId - The user id of the user who wrote the comment
+ * @param $commentWineId - The id of the wine that the comment is for
+ */
 function resetCommentAppearance($comment, $commentStartingValue, $commentId, $commentUserId, $commentWineId)
 {
     isEditingComment = false;

@@ -37,6 +37,11 @@ window.addEventListener('load', () => {
         }
     })
 
+    //Ajout d'images
+    formUpload.addEventListener('submit', e => {
+        uploadImage(formUpload, e);
+    })
+
     if(!getCookie('username')){
         $('#login').text('Connexion')
     } else {
