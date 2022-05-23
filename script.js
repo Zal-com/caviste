@@ -42,6 +42,8 @@ window.addEventListener('load', () => {
         uploadImage(formUpload, e);
     })
 
+    /* It's checking if the user is logged in or not. If not, it displays the login button. If yes, it displays the
+    username. */
     if(!getCookie('username')){
         $('#login').text('Connexion')
     } else {

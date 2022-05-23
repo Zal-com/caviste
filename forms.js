@@ -1,3 +1,9 @@
+/**
+ * It displays a popup when the user clicks on the button
+ * @param open - the element that will open the popup
+ * @param container - the div that contains the form
+ * @param close - the close button
+ */
 function popupDisplayer(open, container, close)
 {
     open.addEventListener('click', () => {
@@ -24,6 +30,8 @@ function popupDisplayer(open, container, close)
 
 }
 
+/* A function that is called when the user clicks on the search button. It will search for the keyword in the name of the
+wines and display the results. */
 function searchWines(form, event)
 {
     event.preventDefault();
@@ -56,6 +64,8 @@ function searchWines(form, event)
     winesListClickListener();
 }
 
+/* A function that is called when the user clicks on the search button. It will search for the keyword in the name of the
+wines and display the results. */
 function filterWineByCountry(form, event)
 {
     event.preventDefault();
@@ -78,6 +88,12 @@ function filterWineByCountry(form, event)
         })
 }
 
+/**
+ * It sends a request to the API with the user's credentials, and if the credentials are valid, it sets the user's
+ * username, id and email in cookies
+ * @param form - the form that was submitted
+ * @param event - the event that triggered the function
+ */
 function login(form, event){
 
     event.preventDefault();
@@ -115,8 +131,10 @@ function login(form, event){
         });
 }
 
-//////// FILTER RESET
 
+/**
+ * If the filter is active, show the clear filter button, otherwise hide it
+ */
 function updateClearFilterBtnStatus()
 {
     isFilterActive ? $('#filterReset').css('display', 'block') : $('#filterReset').css('display', 'none');
@@ -124,6 +142,10 @@ function updateClearFilterBtnStatus()
 
 //////// GET ALL COUNTRIES WITH WINES
 
+/**
+ * It loops through the sessionStorage, gets the country of each wine, and adds it to the countriesAvailable array if it's
+ * not already in there
+ */
 function getCountries()
 {
     let wine, country;
@@ -142,8 +164,10 @@ function getCountries()
     $('#formFilterSelect').html(html);
 }
 
-//////// CHARACTER COUNTER IN FORM
-
+/**
+ * It adds an event listener to each textarea element that updates the text of the previous sibling element with the number
+ * of characters remaining
+ */
 function characterCount()
 {
     let textareas = document.getElementsByTagName('textarea');
@@ -158,8 +182,6 @@ function characterCount()
         });
     }
 }
-
-//////// SET DATA IN FORM
 
 /**
  * It sets the note form data

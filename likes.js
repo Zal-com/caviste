@@ -88,6 +88,10 @@ function dislikeWine(wineId)
     $('#likes i').text(' ' + (parseInt($('#likes i').text()) - 1))
 }
 
+/**
+ * It fetches the number of likes for a wine, and then displays it in the likes element
+ * @param id - The id of the wine
+ */
 function displayLikes(id)
 {
     fetch(apiURL + 'wines/' + id + '/likes-count')
