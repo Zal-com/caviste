@@ -7,11 +7,11 @@ window.addEventListener('load', () => {
         getWines(false)
     }, 20000);
 
-    /* Recherche vins */
+    /* wines search */
     formSearch.addEventListener('submit', (event) => {
         searchWines(formSearch, event);
     })
-    /* filtre des vins */
+    /* wines filter */
     formFilter.addEventListener('submit', (event) => {
        filterWineByCountry(formFilter, event);
        isFilterActive = true;
@@ -28,7 +28,7 @@ window.addEventListener('load', () => {
         updateClearFilterBtnStatus()
     })
 
-    // close pop ups escape key
+    /* Escape key press closes pop-ups*/
     window.addEventListener('keyup', (event) => {
         if (event.key === "Escape") {
             document.querySelectorAll('.popup').forEach(popup => {
@@ -37,7 +37,7 @@ window.addEventListener('load', () => {
         }
     })
 
-    //Ajout d'images
+    /* Opening image upload pop-up */
     formUpload.addEventListener('submit', e => {
         uploadImage(formUpload, e);
     })

@@ -66,9 +66,9 @@ function getWineData(id) {
 
     getPersonalNote(id);
 
-    popupDisplayer(document.getElementById('addNote'), document.getElementById('noteContainer'), document.getElementById('noteCross'), true);
-    popupDisplayer(document.getElementById('login'), document.getElementById('loginContainer'), document.getElementById('loginCross'), true);
-    popupDisplayer(document.getElementById('addImage'), document.getElementById('uploadContainer'), document.getElementById('uploadCross'), true);
+    popupDisplayer(document.getElementById('addNote'), document.getElementById('noteContainer'), document.getElementById('noteCross'));
+    popupDisplayer(document.getElementById('login'), document.getElementById('loginContainer'), document.getElementById('loginCross'));
+    popupDisplayer(document.getElementById('addImage'), document.getElementById('uploadContainer'), document.getElementById('uploadCross'));
 
     document.getElementById('likeBtn').addEventListener('click', e => {
         addLike(id, getCookie('username'));

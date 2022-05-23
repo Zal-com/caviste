@@ -21,6 +21,7 @@ function popupDisplayer(open, container, close)
             container.style.display = 'none';
         })
     });
+
 }
 
 function searchWines(form, event)
