@@ -29,8 +29,11 @@ function getWineData(id) {
     }
 
 
+    /* It empties the content of the element with the id 'vin-img'. */
+    $('#vin-img').empty();
+
     /* Setting the source of the image to the picture of the wine. */
-    $('#vin-img img').attr("src", "https://cruth.phpnet.org/epfc/caviste/public/pics/" + wine.picture);
+    $('#vin-img').append('<img src="https://cruth.phpnet.org/epfc/caviste/public/pics/' + wine.picture + '">');
 
 
     /* Displaying the data of the wine with the given id. */

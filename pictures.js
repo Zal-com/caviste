@@ -60,7 +60,7 @@ function getWinePictures(wineId){
         'mode': 'cors',
         'headers': {
             'content-type': 'application/json; charset=utf-8',
-            'Authorization': 'Basic '+btoa(credentials)	//Try with other credentials (login:password)
+            'Authorization': 'Basic '+btoa(credentials)
         }
     };
 
@@ -73,8 +73,12 @@ function getWinePictures(wineId){
                     for(img of data) {
                         $('#vin-img').append('<img src="https://cruth.phpnet.org/epfc/caviste/public/uploads/' + img.url + '">');
                     }
-                    let nbreImages = document.querySelectorAll('#vin-img img')
-                    $('#addImage').text('Add a picture (' + nbreImages.length + '/3)');
+                    let nbreImages = document.querySelectorAll('#vin-img img:not(:first-child)')
+                    $('#addImage').html('<i class="fa-solid fa-camera"></i> Add a picture (' + nbreImages.length + '/3)');
+
+                    if(nbreImages.length == 3){
+                        $('#addImage').attr("disabled", true);
+                    }
                 });
             }
         });
