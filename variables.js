@@ -253,10 +253,12 @@ const formFilter = document.getElementById('formFilter');
 const noteForm = document.getElementById('noteForm');
 const commentForm = document.getElementById('commentForm');
 const resetFilterBtn = document.getElementById('filterReset');
+const resetSearchBtn = document.getElementById('searchReset');
 let winesListElements = [];
 // array comme ça easier to modifier
 let winesLiked = [];
 //
 let isFilterActive = false;
+let isSearchActive = false;
 let isEditingComment = false;
 const countriesAvailable = [];

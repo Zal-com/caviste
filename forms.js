@@ -7,6 +7,12 @@
 function popupDisplayer(open, container, close)
 {
     open.addEventListener('click', () => {
+        if(!getCookie('username')){
+            //open = document.getElementById('login');
+            container = document.getElementById('loginContainer');
+            close = document.getElementById('loginCross');
+            console.log(open, container, close);
+        }
         container.style.display = 'block';
 
         switch (container.id){
@@ -125,6 +131,12 @@ function login(form, event){
                         $('#login').text(form.username.value);
                         resetLikes();
                         getUserLikes(getCookie('userid'));
+
+                        let liActive = document.querySelector('.active');
+                        if (liActive !== null) {
+                            setElementFocus('.active');
+                        }
+
                     }
                 })
             }
@@ -140,7 +152,15 @@ function updateClearFilterBtnStatus()
     isFilterActive ? $('#filterReset').css('display', 'block') : $('#filterReset').css('display', 'none');
 }
 
-//////// GET ALL COUNTRIES WITH WINES
+
+/**
+ * If the search is active, show the clear search button, otherwise hide it
+ */
+function updateClearSearchBtnStatus()
+{
+    isSearchActive ? $('#searchReset').css('display', 'block') : $('#searchReset').css('display', 'none');
+}
+
 
 /**
  * It loops through the sessionStorage, gets the country of each wine, and adds it to the countriesAvailable array if it's

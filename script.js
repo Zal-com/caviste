@@ -10,6 +10,8 @@ window.addEventListener('load', () => {
     /* wines search */
     formSearch.addEventListener('submit', (event) => {
         searchWines(formSearch, event);
+        isSearchActive = true;
+        updateClearSearchBtnStatus()
     })
     /* wines filter */
     formFilter.addEventListener('submit', (event) => {
@@ -27,6 +29,11 @@ window.addEventListener('load', () => {
         isFilterActive = false;
         updateClearFilterBtnStatus()
     })
+    resetSearchBtn.addEventListener('click', () => {
+        displayAllWines();
+        isSearchActive = false;
+        updateClearSearchBtnStatus()
+    });
 
     /* Escape key press closes pop-ups*/
     window.addEventListener('keyup', (event) => {
