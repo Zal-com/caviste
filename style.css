@@ -223,7 +223,7 @@ footer{
 }
 
 .ml-form-el {
-    margin-left: 55px; !important;
+    margin-left: 55px !important;
 }
 
 #noteForm button{
@@ -254,6 +254,10 @@ textarea{
 
 .error{
     color: red;
+}
+
+.myComment {
+    color: purple;
 }
 
 /******** SCROLLBAR *********/

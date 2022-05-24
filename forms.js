@@ -8,10 +8,8 @@ function popupDisplayer(open, container, close)
 {
     open.addEventListener('click', () => {
         if(!getCookie('username')){
-            //open = document.getElementById('login');
             container = document.getElementById('loginContainer');
             close = document.getElementById('loginCross');
-            console.log(open, container, close);
         }
         container.style.display = 'block';
 
@@ -47,8 +45,9 @@ function searchWines(form, event)
 
     for (let i = 0; i < sessionStorage.length ; i++) {
         let wine = JSON.parse(sessionStorage[i+1]);
-        if (wine.name.includes(keyword)) {
-            wines.push([wine.name.toUpperCase(), wine.id]);
+        let wineName = wine.name.toUpperCase();
+        if (wineName.includes(keyword.toUpperCase())) {
+            wines.push([wineName, wine.id]);
         }
     }
 
@@ -158,7 +157,12 @@ function updateClearFilterBtnStatus()
  */
 function updateClearSearchBtnStatus()
 {
-    isSearchActive ? $('#searchReset').css('display', 'block') : $('#searchReset').css('display', 'none');
+    if (isSearchActive) {
+        $('#searchReset').css('display', 'block');
+    } else {
+        $('#searchReset').css('display', 'none');
+        $('#formSearch input').val('');
+    }
 }
 
 

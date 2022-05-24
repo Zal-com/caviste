@@ -47,18 +47,25 @@ function getWineComments(id)
         .then(json => {
             let commentsHTML = '<button class="btn btn-dark" id="addComment">Ajouter commentaire</button><span class="ml-form-el">Pour modifier ou supprimer un ancien commentaire il vous suffit de cliquer deux fois dessus</span><hr>';
             for (const comment of json) {
-                commentsHTML += `<p class="editable" data-comment-id="${comment.id}" data-user-id="${comment.user_id}" data-wine-id="${comment.wine_id}">${comment.content}</p><hr>`
+                commentsHTML += `<p class="editable`;
+                if (getCookie('userid') && getCookie('userid') === comment.user_id) {
+                    commentsHTML += ` myComment`;
+                }
+                commentsHTML += `"`;
+                commentsHTML +=  ` data-comment-id="${comment.id}" data-user-id="${comment.user_id}" data-wine-id="${comment.wine_id}">${comment.content}</p><hr>`
             }
-            if(commentsHTML === ''){
+            /*
+            if(json === '' ){
                 commentsHTML = '<p class="no-comment">Pas de commentaires</p>'
             }
+            */
             $('#tabs-2').html(commentsHTML);
 
             let editables = document.querySelectorAll('.editable');
 
             transformCommentToEdit(editables);
 
-            popupDisplayer(document.getElementById('addComment'), document.getElementById('commentContainer'), document.getElementById('commentCross'), true);
+            popupDisplayer(document.getElementById('addComment'), document.getElementById('commentContainer'), document.getElementById('commentCross'));
         })
 }
 
