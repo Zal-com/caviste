@@ -1,4 +1,9 @@
 /**
+ * @authors Kestens Maxime, Stordeur Guillaume
+ *
+ */
+
+/**
  * It takes a form, validates it, and if it's valid, it sends the image to the server
  * @param form - the form that contains the file input
  * @param event - The event object
@@ -51,7 +56,7 @@ function uploadImage(form, event){
  * It fetches the pictures of a wine from the API and displays them in the DOM
  * @param wineId - the id of the wine you want to get the pictures from
  */
-function getWinePictures(wineId){
+function getWinePictures(wineId, winePicture){
 
     const credentials = getCookie('username') + ':123';
 
@@ -70,8 +75,21 @@ function getWinePictures(wineId){
         .then(function(response) {
             if (response.ok) {
                 response.json().then(function (data) {
-                    for(img of data) {
-                        $('#vin-img').append('<img src="https://cruth.phpnet.org/epfc/caviste/public/uploads/' + img.url + '">');
+
+                    let $slick = $('#vin-img');
+
+                    if (data.length !== 0){
+
+                        for(img of data) {
+                            $slick.append('<img src="https://cruth.phpnet.org/epfc/caviste/public/uploads/' + img.url + '" alt="customPicture">');
+                        }
+                        $slick.slick({
+                            dots: true,
+                            infinite: true,
+                            speed: 500,
+                            fade: true,
+                            cssEase: 'linear'
+                        });
                     }
                     let nbreImages = document.querySelectorAll('#vin-img img:not(:first-child)')
                     $('#addImage').html('<i class="fa-solid fa-camera"></i> Add a picture (' + nbreImages.length + '/3)');

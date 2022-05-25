@@ -1,4 +1,9 @@
 /**
+ * @authors Kestens Maxime, Stordeur Guillaume
+ *
+ */
+
+/**
  * It fetches the wines from the API, stores them in the session storage, and then displays them
  * @param hasToDisplay - a boolean that indicates whether the wines should be displayed or not.
  */
@@ -32,10 +37,6 @@ function getWineData(id) {
     /* It empties the content of the element with the id 'vin-img'. */
     $('#vin-img').empty();
 
-    /* Setting the source of the image to the picture of the wine. */
-    $('#vin-img').append('<img src="https://cruth.phpnet.org/epfc/caviste/public/pics/' + wine.picture + '">');
-
-
     /* Displaying the data of the wine with the given id. */
     $('#vin-data').html(`<h2><span id="wine-id">#${wine.id}</span><span id="wine-name"> ${wine.name.toUpperCase()}</span></h2>
                                     <p><b>Grapes :</b> ${wine.grapes}</p>
@@ -61,7 +62,19 @@ function getWineData(id) {
     getWineComments(id);
 
     if(getCookie('username')){
+        let isSlickActive = document.querySelector('.slick-initialized');
+        let $slick = $('#vin-img');
+        if (isSlickActive != null) {
+            $slick.slick('unslick');
+            $slick.empty();
+        }
+        /* Setting the source of the image to the picture of the wine. */
+        $slick.append('<img src="https://cruth.phpnet.org/epfc/caviste/public/pics/' + wine.picture + '" alt="vin">');
+
         getWinePictures(id)
+    } else {
+        /* Setting the source of the image to the picture of the wine. */
+        $('#vin-img').append('<img src="https://cruth.phpnet.org/epfc/caviste/public/pics/' + wine.picture + '" alt="vin">');
     }
 
     getPersonalNote(id);

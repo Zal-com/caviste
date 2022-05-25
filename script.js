@@ -1,3 +1,8 @@
+/**
+ * @authors Kestens Maxime, Stordeur Guillaume
+ *
+ */
+
 window.addEventListener('load', () => {
     // get all wines
     getWines(true);

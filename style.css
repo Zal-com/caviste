@@ -257,7 +257,20 @@ textarea{
 }
 
 .myComment {
-    color: purple;
+    color: #7f007f;
+}
+
+.slick-arrow {
+    background-color: #7f007f !important;
+    border-radius: 50%;
+}
+
+#vin-listing {
+    padding-right: 30px;
+}
+
+#vin-data {
+    padding-left: 35px;
 }
 
 /******** SCROLLBAR *********/

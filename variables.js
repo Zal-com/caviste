@@ -1,3 +1,8 @@
+/**
+ * @authors Kestens Maxime, Stordeur Guillaume
+ *
+ */
+
 const apiURL = 'https://cruth.phpnet.org/epfc/caviste/public/index.php/api/';
 const flagsAPI = 'https://countryflagsapi.com/png/'
 const flagsList = [

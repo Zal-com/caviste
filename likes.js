@@ -1,4 +1,9 @@
 /**
+ * @authors Kestens Maxime, Stordeur Guillaume
+ *
+ */
+
+/**
  * It takes a wineId and a username, and if the user is liking the wine, it sends a PUT request to the API with the body {
  * "like" : true }. If the user is disliking the wine, it sends a PUT request with the body { "like" : false }
  * @param wineId - The id of the wine you want to like/dislike

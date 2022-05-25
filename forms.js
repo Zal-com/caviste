@@ -1,4 +1,9 @@
 /**
+ * @authors Kestens Maxime, Stordeur Guillaume
+ *
+ */
+
+/**
  * It displays a popup when the user clicks on the button
  * @param open - the element that will open the popup
  * @param container - the div that contains the form

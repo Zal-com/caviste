@@ -1,4 +1,9 @@
 /**
+ * @authors Kestens Maxime, Stordeur Guillaume
+ *
+ */
+
+/**
  * It takes the form data, sends it to the API, and then updates the page with the new comment
  * @param form - the form that was submitted
  * @param event - the event that triggered the function

@@ -1,4 +1,9 @@
 /**
+ * @authors Kestens Maxime, Stordeur Guillaume
+ *
+ */
+
+/**
  * > Sets focus to the element passed as a parameter
  * @param element - the element to set focus to
  */

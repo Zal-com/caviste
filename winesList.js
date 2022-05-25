@@ -1,4 +1,9 @@
 /**
+ * @authors Kestens Maxime, Stordeur Guillaume
+ *
+ */
+
+/**
  * It loops through the sessionStorage and creates a list of wines
  */
 function displayAllWines() {
